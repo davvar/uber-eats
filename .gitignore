@@ -40,6 +40,7 @@ build/Release
 
 # Dependency directories
 node_modules/
+.vscode/
 jspm_packages/
 
 # Snowpack dependency directory (https://snowpack.dev/)
@@ -72,6 +73,7 @@ web_modules/
 # dotenv environment variables file
 .env
 .env.test
+.env.dev
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
@@ -115,3 +117,4 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
