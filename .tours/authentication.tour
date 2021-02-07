@@ -1,0 +1,31 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "Authentication",
+  "steps": [
+    {
+      "file": "backend/src/app.module.ts",
+      "description": "1. add a middleware to grab the token from http headers\n",
+      "line": 58
+    },
+    {
+      "file": "backend/src/jwt/jwt.middleware.ts",
+      "description": "1. decode token\n2. if token has id find user by id\n3. assign user to req.user\n4. call next function anyways",
+      "line": 13
+    },
+    {
+      "file": "backend/src/app.module.ts",
+      "description": "1. pass user throug GqlContext to all resolvers\n",
+      "line": 35
+    },
+    {
+      "file": "backend/src/users/users.resolver.ts",
+      "description": "1. use AuthGuard for to forbid resolver if no user was found in the req",
+      "line": 35
+    },
+    {
+      "file": "backend/src/users/users.resolver.ts",
+      "description": "1. add AuthUser decorator on top of GraphQl Context to grab the user",
+      "line": 36
+    }
+  ]
+}

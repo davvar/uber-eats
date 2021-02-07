@@ -1,0 +1,12 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "user-authentication",
+  "steps": [
+    {
+      "file": "backend/src/users/users.service.ts",
+      "description": "1. check if user exists by email\n2. check if password is correct with `bycrypt.compare(password, this.password)`\n3. create a token\n4. send back the token",
+      "line": 34,
+      "title": "LogIn "
+    }
+  ]
+}
