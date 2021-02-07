@@ -8,11 +8,9 @@ import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as Joi from 'joi';
-import { AuthModule } from './auth/auth.module';
-import { JwtMiddleware } from './jwt/jwt.middleware';
-import { JwtModule } from './jwt/jwt.module';
-import { User } from './users/entities/user.entity';
-import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth';
+import { JwtMiddleware, JwtModule } from './jwt';
+import { User, UsersModule } from './users';
 
 @Module({
   imports: [
