@@ -3,8 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { MutationOutput } from 'src/common';
 import { JwtService } from 'src/jwt/jwt.service';
 import { Repository } from 'typeorm';
-import { User } from '.';
 import { CreateAccountInput, LogInInput, LogInOutput } from './dtos';
+import { User } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
@@ -49,5 +49,9 @@ export class UsersService {
     } catch (error) {
       return { ok: false, error };
     }
+  }
+
+  async findById(id: number): Promise<User> {
+    return this.users.findOne({ id });
   }
 }
