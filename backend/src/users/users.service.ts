@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CoreOutput } from 'src/common';
 import { JwtService } from 'src/jwt/jwt.service';
+import { MailService } from 'src/mail';
 import { Repository } from 'typeorm';
 import {
   CreateAccountInput,
@@ -20,6 +21,7 @@ export class UsersService {
     @InjectRepository(Verification)
     private readonly verifications: Repository<Verification>,
     private readonly jwtService: JwtService,
+    private readonly mailService: MailService,
   ) {}
 
   async createAccount({
@@ -37,7 +39,10 @@ export class UsersService {
         this.users.create({ email, password, role }),
       );
 
-      await this.verifications.save(this.verifications.create({ user }));
+      const { code } = await this.verifications.save(
+        this.verifications.create({ user }),
+      );
+      await this.mailService.sendVerificationEmail(user.email, code);
 
       return { ok: true };
     } catch (e) {
@@ -96,7 +101,10 @@ export class UsersService {
       user.verified = false;
       user.email = email;
 
-      await this.verifications.save(this.verifications.create({ user }));
+      const { code } = await this.verifications.save(
+        this.verifications.create({ user }),
+      );
+      await this.mailService.sendVerificationEmail(user.email, code);
     }
 
     if (password) user.password = password;
