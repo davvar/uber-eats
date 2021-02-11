@@ -9,7 +9,8 @@ import {
   LogInInput,
   LogInOutput,
   UserProfileInput,
-  UserProfileOutput
+  UserProfileOutput,
+  VerifyEmailInput
 } from './dtos';
 import { User } from './entities/user.entity';
 import { UsersService } from './users.service';
@@ -22,20 +23,12 @@ export class UsersResolver {
   async createAccount(
     @Args('input') input: CreateAccountInput,
   ): Promise<CoreOutput> {
-    try {
-      return this.userService.createAccount(input);
-    } catch (error) {
-      return { ok: false, error };
-    }
+    return this.userService.createAccount(input);
   }
 
   @Mutation(_returns => LogInOutput)
-  async logIn(@Args('input') input: LogInInput): Promise<LogInOutput> {
-    try {
-      return this.userService.logIn(input);
-    } catch (error) {
-      return { ok: false, error };
-    }
+  logIn(@Args('input') input: LogInInput): Promise<LogInOutput> {
+    return this.userService.logIn(input);
   }
 
   @Query(_returns => User)
@@ -46,34 +39,23 @@ export class UsersResolver {
 
   @UseGuards(AuthGuard)
   @Query(_returns => UserProfileOutput)
-  async userProfile(
+  userProfile(
     @Args() { userId }: UserProfileInput,
   ): Promise<UserProfileOutput> {
-    try {
-      const user = await this.userService.findById(userId);
-
-      if (!user) {
-        throw new Error();
-      }
-
-      return { ok: true, user };
-    } catch (error) {
-      return { ok: false, error: 'user not found' };
-    }
+    return this.userService.userProfile(userId);
   }
 
   @UseGuards(AuthGuard)
   @Mutation(_returns => EditProfileOutput)
-  async editProfile(
+  editProfile(
     @AuthUser() { id }: User,
     @Args('input') updates: EditProfileInput,
   ): Promise<EditProfileOutput> {
-    try {
-      await this.userService.editProfile(id, updates);
+    return this.userService.editProfile(id, updates);
+  }
 
-      return { ok: true };
-    } catch (error) {
-      return { ok: false, error };
-    }
+  @Mutation(_returns => CoreOutput)
+  verifyEmail(@Args('input') { code }: VerifyEmailInput): Promise<CoreOutput> {
+    return this.userService.verifyEmail(code);
   }
 }

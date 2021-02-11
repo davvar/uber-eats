@@ -10,7 +10,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import * as Joi from 'joi';
 import { AuthModule } from './auth';
 import { JwtMiddleware, JwtModule } from './jwt';
-import { User, UsersModule } from './users';
+import { MailModule } from './mail';
+import { User, UsersModule, Verification } from './users';
 
 @Module({
   imports: [
@@ -26,6 +27,10 @@ import { User, UsersModule } from './users';
         DB_PASSWORD: Joi.string().required(),
         DB_NAME: Joi.string().required(),
         SECRET_KEY: Joi.string().required(),
+        EMAIL_FROM: Joi.string().required(),
+        EMAIL_PASS: Joi.string().required(),
+        EMAIL_USER: Joi.string().required(),
+        EMAIL_PORT: Joi.string(),
       }),
     }),
     GraphQLModule.forRoot({
@@ -41,11 +46,17 @@ import { User, UsersModule } from './users';
       database: process.env.DB_NAME,
       synchronize: process.env.NODE_ENV !== 'prod',
       logging: process.env.NODE_ENV !== 'prod',
-      entities: [User],
+      entities: [User, Verification],
     }),
     UsersModule,
     JwtModule.forRoot({ privateKey: process.env.SECRET_KEY }),
     AuthModule,
+    MailModule.forRoot({
+      from: process.env.EMAIL_FROM,
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
+      port: process.env.EMAIL_PORT,
+    }),
   ],
   controllers: [],
   providers: [],

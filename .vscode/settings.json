@@ -1,5 +1,6 @@
 {
   "cSpell.words": [
+    "MAILGUN",
     "dtos",
     "nestjs",
     "postgres",
@@ -11,6 +12,7 @@
     "**/.svn": true,
     "**/.hg": true,
     "**/CVS": true,
+    "**/dist": false,
     "**/.DS_Store": true,
     "**/node_modules": true,
   },
