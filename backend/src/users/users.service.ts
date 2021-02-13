@@ -50,20 +50,6 @@ export class UsersService {
     }
   }
 
-  async userProfile(userId: number): Promise<UserProfileOutput> {
-    try {
-      const user = await this.findById(userId);
-
-      if (!user) {
-        throw new Error();
-      }
-
-      return { ok: true, user };
-    } catch (error) {
-      return { ok: false, error: 'user not found' };
-    }
-  }
-
   async logIn({ email, password }: LogInInput): Promise<LogInOutput> {
     try {
       const user = await this.users.findOne(
@@ -87,33 +73,39 @@ export class UsersService {
     }
   }
 
-  async findById(id: number): Promise<User> {
-    return this.users.findOne({ id });
+  async findById(id: number): Promise<UserProfileOutput> {
+    try {
+      const user = await this.users.findOneOrFail({ id });
+
+      return { ok: true, user };
+    } catch (error) {
+      return { ok: false, error: 'user not found' };
+    }
   }
 
   async editProfile(
     userId: number,
     { email, password }: EditProfileInput,
   ): Promise<EditProfileOutput> {
-    const user = await this.users.findOne(userId);
-
-    if (email) {
-      user.verified = false;
-      user.email = email;
-
-      const { code } = await this.verifications.save(
-        this.verifications.create({ user }),
-      );
-      await this.mailService.sendVerificationEmail(user.email, code);
-    }
-
-    if (password) user.password = password;
-
     try {
+      const user = await this.users.findOne(userId);
+
+      if (email) {
+        user.verified = false;
+        user.email = email;
+
+        const { code } = await this.verifications.save(
+          this.verifications.create({ user }),
+        );
+        await this.mailService.sendVerificationEmail(user.email, code);
+      }
+
+      if (password) user.password = password;
+
       await this.users.save(user);
       return { ok: true };
     } catch (error) {
-      return { ok: false, error };
+      return { ok: false, error: 'Could not update account' };
     }
   }
 
@@ -125,7 +117,7 @@ export class UsersService {
       );
 
       if (!verification) {
-        throw 'Verification not found';
+        throw new Error();
       }
 
       verification.user.verified = true;
@@ -133,8 +125,8 @@ export class UsersService {
       await this.verifications.delete(verification.id);
 
       return { ok: true };
-    } catch (error) {
-      return { ok: false, error };
+    } catch {
+      return { ok: false, error: 'Verification not found' };
     }
   }
 }

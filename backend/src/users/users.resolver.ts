@@ -42,7 +42,7 @@ export class UsersResolver {
   userProfile(
     @Args() { userId }: UserProfileInput,
   ): Promise<UserProfileOutput> {
-    return this.userService.userProfile(userId);
+    return this.userService.findById(userId);
   }
 
   @UseGuards(AuthGuard)
