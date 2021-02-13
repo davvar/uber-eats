@@ -40,9 +40,9 @@ describe('JwtService', () => {
   describe('verify', () => {
     it('should return the decoded JWT token', () => {
       const token = 'token'
-      expect(service.verify('token')).toEqual({ id: userId });
+      expect(service.verify(token)).toEqual({ id: userId });
       expect(jwt.verify).toHaveBeenCalledTimes(1)
-      expect(jwt.verify).toHaveBeenCalledWith('token', privateKey)
+      expect(jwt.verify).toHaveBeenCalledWith(token, privateKey)
     })
   })
 });
