@@ -91,9 +91,19 @@ export class UsersService {
       const user = await this.users.findOne(userId);
 
       if (email) {
+        if (user.email === email) {
+          return { ok: true };
+        }
+
+        const emailAlreadyTaken = await this.users.findOne({ email });
+        if (emailAlreadyTaken) {
+          throw new Error('Email already taken.');
+        }
+
         user.verified = false;
         user.email = email;
 
+        await this.verifications.delete({ user: { id: user.id } });
         const { code } = await this.verifications.save(
           this.verifications.create({ user }),
         );
@@ -105,7 +115,7 @@ export class UsersService {
       await this.users.save(user);
       return { ok: true };
     } catch (error) {
-      return { ok: false, error: 'Could not update account' };
+      return { ok: false, error: `Could not update account. ${error.message}` };
     }
   }
 
