@@ -59,7 +59,6 @@ import { User, UsersModule, Verification } from './users';
     }),
   ],
   controllers: [],
-  providers: [],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
