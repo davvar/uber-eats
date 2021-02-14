@@ -56,6 +56,7 @@ import { UsersModule } from './users/users.module';
     UsersModule,
     JwtModule.forRoot({ privateKey: process.env.SECRET_KEY }),
     AuthModule,
+    AuthModule,
     MailModule.forRoot({
       from: process.env.EMAIL_FROM,
       user: process.env.EMAIL_USER,
