@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CoreOutput } from 'src/common';
 import { JwtService } from 'src/jwt/jwt.service';
-import { MailService } from 'src/mail';
+import { MailService } from 'src/mail/mail.service';
 import { Repository } from 'typeorm';
 import {
   CreateAccountInput,

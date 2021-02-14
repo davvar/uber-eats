@@ -8,10 +8,16 @@ import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as Joi from 'joi';
-import { AuthModule } from './auth';
-import { JwtMiddleware, JwtModule } from './jwt';
-import { MailModule } from './mail';
-import { User, UsersModule, Verification } from './users';
+import { AuthModule } from './auth/auth.module';
+import { JwtMiddleware } from './jwt/jwt.middleware';
+import { JwtModule } from './jwt/jwt.module';
+import { MailModule } from './mail/mail.module';
+import { Category } from './restaurants/entities/category.entity';
+import { Restaurant } from './restaurants/entities/restaurant.entity';
+import { RestaurantsModule } from './restaurants/restaurants.module';
+import { User } from './users/entities/user.entity';
+import { Verification } from './users/entities/verification.entity';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -30,7 +36,6 @@ import { User, UsersModule, Verification } from './users';
         EMAIL_FROM: Joi.string().required(),
         EMAIL_PASS: Joi.string().required(),
         EMAIL_USER: Joi.string().required(),
-        EMAIL_PORT: Joi.string(),
       }),
     }),
     GraphQLModule.forRoot({
@@ -46,7 +51,7 @@ import { User, UsersModule, Verification } from './users';
       database: process.env.DB_NAME,
       synchronize: process.env.NODE_ENV !== 'prod',
       logging: false, //!['prod', 'test'].includes(process.env.NODE_ENV),
-      entities: [User, Verification],
+      entities: [User, Verification, Restaurant, Category],
     }),
     UsersModule,
     JwtModule.forRoot({ privateKey: process.env.SECRET_KEY }),
@@ -57,6 +62,7 @@ import { User, UsersModule, Verification } from './users';
       pass: process.env.EMAIL_PASS,
       port: process.env.EMAIL_PORT,
     }),
+    RestaurantsModule,
   ],
   controllers: [],
 })

@@ -42,7 +42,7 @@ export class MailService {
     return nodemailer
       .createTransport({
         service: 'gmail',
-        port: +this.options.port || 2525,
+        port: 2525,
         auth: {
           user: this.options.user,
           pass: this.options.pass,
