@@ -11,10 +11,10 @@ import { CoreEntity } from 'src/common';
 import { Restaurant } from 'src/restaurants/entities/restaurant.entity';
 import { BeforeInsert, BeforeUpdate, Column, Entity, OneToMany } from 'typeorm';
 
-enum UserRole {
-  CLIENT,
-  OWNER,
-  DELIVERY,
+export enum UserRole {
+  CLIENT = 'CLIENT',
+  OWNER = 'OWNER',
+  DELIVERY = 'DELIVERY',
 }
 
 registerEnumType(UserRole, { name: 'UserRole' });
