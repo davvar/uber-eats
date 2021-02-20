@@ -1,9 +1,10 @@
 import { Test } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { JwtService } from 'src/jwt';
-import { MailService } from 'src/mail';
+import { JwtService } from 'src/jwt/jwt.service';
+import { MailService } from 'src/mail/mail.service';
 import { Repository } from 'typeorm';
-import { User, Verification } from '.';
+import { User } from './entities/user.entity';
+import { Verification } from './entities/verification.entity';
 import { UsersService } from './users.service';
 
 const mockRepository = () => ({

@@ -1,7 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
-import * as nodemailer from 'nodemailer';
-import { SentMessageInfo } from 'nodemailer';
-import * as hbs from 'nodemailer-express-handlebars';
+import nodemailer, { SentMessageInfo } from 'nodemailer';
+import hbs from 'nodemailer-express-handlebars';
 import Mail from 'nodemailer/lib/mailer';
 import { CONFIG_OPTIONS } from '../common';
 import { handlebarOptions } from './mail.constants';

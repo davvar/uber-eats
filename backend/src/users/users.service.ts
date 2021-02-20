@@ -31,6 +31,7 @@ export class UsersService {
   }: CreateAccountInput): Promise<CoreOutput> {
     try {
       const exists = await this.users.findOne({ email });
+      console.log({ email });
       if (exists) {
         return { ok: false, error: 'User with that email already exists' };
       }
