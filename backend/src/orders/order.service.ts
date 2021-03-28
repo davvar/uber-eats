@@ -165,36 +165,38 @@ export class OrderService {
         return { ok: false, error: "You can't see that." };
       }
 
-      let canEdit = true;
-      if (user.role === UserRole.CLIENT) {
-        canEdit = false;
-      }
-
-      if (
-        user.role === UserRole.OWNER &&
-        status !== OrderStatus.Cooking &&
-        status !== OrderStatus.Cooked
-      ) {
-        canEdit = false;
-      }
-
-      if (
-        user.role === UserRole.DELIVERY &&
-        status !== OrderStatus.PickedUp &&
-        status !== OrderStatus.Delivered
-      ) {
-        canEdit = false;
-      }
-
-      if (!canEdit) {
-        return { ok: false, error: "You can't edit order" };
-      }
-
-      await this.orders.save([{ id, status }]);
-      return { ok: true };
+      if (this.canEditOrder(user, status)) {
+        await this.orders.save([{ id, status }]);
+        return { ok: true };
+      } else return { ok: false, error: "You can't edit order" };
     } catch (error) {
       return { ok: false, error: 'Could not edit order' };
     }
+  }
+
+  private canEditOrder(user: User, status: OrderStatus) {
+    let canEdit = true;
+    if (user.role === UserRole.CLIENT) {
+      canEdit = false;
+    }
+
+    if (
+      user.role === UserRole.OWNER &&
+      status !== OrderStatus.Cooking &&
+      status !== OrderStatus.Cooked
+    ) {
+      canEdit = false;
+    }
+
+    if (
+      user.role === UserRole.DELIVERY &&
+      status !== OrderStatus.PickedUp &&
+      status !== OrderStatus.Delivered
+    ) {
+      canEdit = false;
+    }
+
+    return canEdit;
   }
 
   private canSeeOrder(order: Order, user: User) {
