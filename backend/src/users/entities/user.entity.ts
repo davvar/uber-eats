@@ -8,6 +8,7 @@ import {
 import * as bycrypt from 'bcryptjs';
 import { IsBoolean, IsEmail, IsEnum, IsString } from 'class-validator';
 import { CoreEntity } from 'src/common';
+import { Order } from 'src/orders/entities/order.entity';
 import { Restaurant } from 'src/restaurants/entities/restaurant.entity';
 import { BeforeInsert, BeforeUpdate, Column, Entity, OneToMany } from 'typeorm';
 
@@ -46,6 +47,15 @@ export class User extends CoreEntity {
   @Field(_is => [Restaurant])
   @OneToMany(type => Restaurant, restaurant => restaurant.owner)
   restaurants: Restaurant[];
+
+
+  @Field(_is => [Order])
+  @OneToMany(type => Order, order => order.customer)
+  orders: Order[];
+
+  @Field(_is => [Order])
+  @OneToMany(type => Order, order => order.driver)
+  rides: Order[];
 
   @BeforeInsert()
   @BeforeUpdate()

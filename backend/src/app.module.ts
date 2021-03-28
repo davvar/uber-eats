@@ -12,7 +12,11 @@ import { AuthModule } from './auth/auth.module';
 import { JwtMiddleware } from './jwt/jwt.middleware';
 import { JwtModule } from './jwt/jwt.module';
 import { MailModule } from './mail/mail.module';
+import { OrderItem } from './orders/entities/order-item.entity';
+import { Order } from './orders/entities/order.entity';
+import { OrdersModule } from './orders/orders.module';
 import { Category } from './restaurants/entities/category.entity';
+import { Dish } from './restaurants/entities/dish.entity';
 import { Restaurant } from './restaurants/entities/restaurant.entity';
 import { RestaurantsModule } from './restaurants/restaurants.module';
 import { User } from './users/entities/user.entity';
@@ -51,7 +55,15 @@ import { UsersModule } from './users/users.module';
       database: process.env.DB_NAME,
       synchronize: process.env.NODE_ENV !== 'prod',
       logging: false, //!['prod', 'test'].includes(process.env.NODE_ENV),
-      entities: [User, Verification, Restaurant, Category],
+      entities: [
+        User,
+        Verification,
+        Restaurant,
+        Category,
+        Dish,
+        Order,
+        OrderItem,
+      ],
     }),
     UsersModule,
     JwtModule.forRoot({ privateKey: process.env.SECRET_KEY }),
@@ -64,6 +76,7 @@ import { UsersModule } from './users/users.module';
       port: process.env.EMAIL_PORT,
     }),
     RestaurantsModule,
+    OrdersModule,
   ],
   controllers: [],
 })
