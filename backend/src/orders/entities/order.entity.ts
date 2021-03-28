@@ -1,4 +1,9 @@
-import { Field, InputType, ObjectType, registerEnumType } from '@nestjs/graphql';
+import {
+  Field,
+  InputType,
+  ObjectType,
+  registerEnumType
+} from '@nestjs/graphql';
 import { IsEnum, IsNumber } from 'class-validator';
 import { CoreEntity } from 'src/common';
 import { Restaurant } from 'src/restaurants/entities/restaurant.entity';
@@ -13,7 +18,7 @@ export enum OrderStatus {
   Delivered = 'Delivered',
 }
 
-registerEnumType(OrderStatus, { name: 'OrderStatus'})
+registerEnumType(OrderStatus, { name: 'OrderStatus' });
 
 @InputType('OrderInputType', { isAbstract: true })
 @ObjectType()
@@ -33,7 +38,6 @@ export class Order extends CoreEntity {
   })
   restaurant?: Restaurant;
 
-
   @Field(type => User, { nullable: true })
   @ManyToOne(type => User, user => user.rides, {
     onDelete: 'SET NULL',
@@ -41,16 +45,15 @@ export class Order extends CoreEntity {
   })
   driver?: User;
 
-
   @Field(type => [OrderItem])
   @ManyToMany(type => OrderItem)
   @JoinTable()
   items: OrderItem[];
 
-  @Column({ nullable: true })
-  @Field(type => Number, { nullable: true })
+  @Column({ default: 0 })
+  @Field(type => Number)
   @IsNumber()
-  total?: number;
+  total: number;
 
   @Column({ type: 'enum', enum: OrderStatus, default: OrderStatus.Pending })
   @Field(type => OrderStatus)
